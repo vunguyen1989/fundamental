@@ -14,7 +14,7 @@ class Singleton {
    public:
    static Singleton *getInstance() {
       if (!instance)
-      instance = new Singleton;
+          instance = new Singleton;
       return instance;
    }
 

@@ -1,0 +1,11 @@
+C++
+smart pointer
+inline
+memory leak
+
+DESIGN PATTERN
+factory pattern
+Open-Closed Principle
+
+ALGORITHM
+b 1, 2 le minh hoang

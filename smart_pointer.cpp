@@ -30,6 +30,9 @@ class CarSP {
         void ShowCar (){
             sp->Run();
         }
+        Car* operator-> (){
+            return sp;
+        }
 };
 
 int main(){

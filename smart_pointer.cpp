@@ -24,13 +24,18 @@ class CarSP {
             sp = new Car();
         }
         ~CarSP(){
+            cout<< "CarSP destructor"<<endl;
             delete sp;
+        }
+        void ShowCar (){
+            sp->Run();
         }
 };
 
 int main(){
 
     CarSP carSP;
+    carSP.ShowCar();
 
     return 0;
 }

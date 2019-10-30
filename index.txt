@@ -9,3 +9,4 @@ Open-Closed Principle
 
 ALGORITHM
 b 1, 2 le minh hoang
+subset_givensize_of_set

@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Client",
+            "request": "launch",
+            "mainClass": "DesignPattern.Client",
+            "projectName": "Test_8f611589"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Client",
+            "request": "launch",
+            "mainClass": "DesignPattern.Structure.Composite.Client",
+            "projectName": "Test_8f611589"
+        }
+    ]
+}

@@ -53,7 +53,8 @@ class DIPExample {
 
 /* DIP
     Các module cấp cao không nên phụ thuộc vào các modules cấp thấp. Cả 2 nên phụ thuộc vào abstraction.
-    Interface (abstraction) không nên phụ thuộc vào chi tiết, mà ngược lại. ( Các class giao tiếp với nhau thông qua interface, không phải thông qua implementation.)
+    Interface (abstraction) không nên phụ thuộc vào chi tiết, mà ngược lại. 
+    Các class giao tiếp với nhau thông qua interface, không phải thông qua implementation.
     
     "High-level modules should not depend on low-level modules. Both should depend on abstractions.
     Abstractions should not depend upon details. Details should depend upon abstractions."

@@ -9,24 +9,24 @@ void PrintArray(int arr[], int n){
     cout<<endl;
 }
 
-int j;//tại sao khi j đặt ở global scope thì chỉ cho ra 000, 111.
-void Attempt(int i, int n, int* arr){
-    for (int j = 0; j < 2; j++) {
+
+void Attempt(int i, int j, int k, int n, int* arr){
+    for (; j <= n ; j++) {
         arr[i] = j;
-        if (i == n - 1){ // tại sao i == n => duplicate mỗi trường hợp ?
-            PrintArray(arr, n);
+        if (i == k - 1){ 
+            PrintArray(arr, k);
         } else {
-            Attempt(i+1, n, arr);
+            Attempt(i + 1, j + 1, k, n, arr);
         }
     }
 }
 
 int main(){
-    int n;
+    int n, k = 3;
     printf("nhap n : ");     // nhap n
     scanf("%d", &n);
  
-    int arr[n];
-    Attempt(0, n, arr);
+    int arr[k];
+    Attempt(0, 1, k, n, arr);
     return 0;
 }

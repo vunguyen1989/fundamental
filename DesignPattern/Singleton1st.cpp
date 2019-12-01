@@ -10,6 +10,9 @@ class Singleton {
    Singleton() {
       data = 0;
    }
+   Singleton(const Singleton& s); // copy constructor prototype ClassName (const ClassName &old_obj);
+   Singleton& operator=(const Singleton&);
+
 
    public:
    static Singleton *getInstance() {
@@ -35,5 +38,8 @@ int main(){
    cout << s->getData() << endl;
    s->setData(100);
    cout << s->getData() << endl;
+
+   // Singleton x(*s);
+   // Singleton y = x;
    return 0;
 }

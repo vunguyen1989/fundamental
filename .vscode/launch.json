@@ -2,6 +2,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - DocumentApp",
+            "request": "launch",
+            "mainClass": "DocumentApp",
+            "projectName": "Test_72dedaab"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - ObserverPatternExample",
+            "request": "launch",
+            "mainClass": "ObserverPatternExample",
+            "projectName": "Test_72dedaab"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - Client",
             "request": "launch",
             "mainClass": "DesignPattern.Client",

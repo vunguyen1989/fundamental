@@ -2,43 +2,55 @@
 
 using namespace std;
 
-class Car{
+class Car
+{
 
-    public:
-        void Run(){
-            cout<< "Car running" << endl;
-        }
-        Car(){
-            cout<<"Car Constructor" << endl;
-        }
-        ~Car(){
-            cout<<"Car Destructor" << endl;
-        }
+public:
+    void Run()
+    {
+        cout << "Car running" << endl;
+    }
+    Car()
+    {
+        cout << "Car Constructor" << endl;
+    }
+    ~Car()
+    {
+        cout << "Car Destructor" << endl;
+    }
 };
 
-class CarSP {
-    Car* sp;
-    public:
-        CarSP(){
-            cout<<"CarSP constructor"<<endl;
-            sp = new Car();
-        }
-        ~CarSP(){
-            cout<< "CarSP destructor"<<endl;
-            delete sp;
-        }
-        void ShowCar (){
-            sp->Run();
-        }
-        Car* operator-> (){
-            return sp;
-        }
+class CarSP
+{
+    Car *sp;
+
+public:
+    CarSP()
+    {
+        cout << "CarSP constructor" << endl;
+        sp = new Car();
+    }
+    ~CarSP()
+    {
+        cout << "CarSP destructor" << endl;
+        delete sp;
+    }
+    void ShowCar()
+    {
+        sp->Run();
+    }
+    Car *operator->()
+    {
+        return sp;
+    }
 };
 
-int main(){
+int main()
+{
 
     CarSP carSP;
-    carSP.ShowCar();
+    // carSP.ShowCar();
+    carSP->Run();
 
     return 0;
 }

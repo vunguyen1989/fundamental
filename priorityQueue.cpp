@@ -16,18 +16,24 @@ void showQueue(priority_queue<int, vector<int>, less<int>>& q){
     }
     
 }
+
+// a predicate
 struct Person{
     int h;
     string name;
-    bool operator< (const Person& p) const{
-        return p.h > h;
-    }
+   
+    // bool operator< (const Person& p) const{
+    //     return p.h > h;
+    // }
 
 };
 
-struct CompareHeigh{
+
+// a functor
+class CompareHeigh{
+public:
     bool operator()(Person p1, Person p2){
-        return p1.h < p2.h;
+        return p1.h > p2.h;
     }
 };
 
@@ -39,16 +45,17 @@ int main(){
     q.push(18);
     // showQueue(q);
 
-    priority_queue<Person, vector<Person>> p_q;
+    priority_queue<Person, vector<Person>, CompareHeigh> p_q;
 
     p_q.push({10, "a"});
     p_q.push({11, "b"});
     p_q.push({8, "c"});
-
+    p_q.push({9, "acd"});
     while (!p_q.empty()){
         Person p = p_q.top();
         cout << "name: " << p.name << " h : " << p.h << endl;
         p_q.pop();
     }
+    cout << endl;
     return 0;
 }

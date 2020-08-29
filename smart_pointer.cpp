@@ -39,6 +39,6 @@ int main(){
 
     CarSP carSP;
     carSP.ShowCar();
-
+    cout << "-------------" << endl;
     return 0;
 }

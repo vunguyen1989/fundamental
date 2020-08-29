@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include <string_view>
 
 int main(){
 	constexpr auto v = std::string_view("ga trong gay le te le te roi ai oi");
@@ -8,4 +9,5 @@ int main(){
 	std::cout << sub_v << std::endl;
 
 }
+
 

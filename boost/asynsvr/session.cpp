@@ -17,14 +17,18 @@ using std::placeholders::_2;
 
 session::session(io_service &service) : socket_{service} {}
 
-void session::start() {
+void session::start()
+{
   auto handler = std::bind(&session::handle_read, shared_from_this(), _1, _2);
   socket_.async_read_some(buffer(buffer_), handler);
 }
 
-void session::handle_read(const error_code &ec, size_t bytes_transferred) {
-  if (ec) {
-    if (ec == eof || ec == connection_reset) {
+void session::handle_read(const error_code &ec, size_t bytes_transferred)
+{
+  if (ec)
+  {
+    if (ec == eof || ec == connection_reset)
+    {
       return;
     }
 
@@ -35,12 +39,16 @@ void session::handle_read(const error_code &ec, size_t bytes_transferred) {
             << bytes_transferred << " bytes on " << socket_.local_endpoint()
             << " from " << socket_.remote_endpoint() << std::endl;
 
+  Checker().IsValid(buffer_.data());
+
   auto handler = std::bind(&session::handle_write, shared_from_this(), _1);
   async_write(socket_, buffer(buffer_.data(), bytes_transferred), handler);
 }
 
-void session::handle_write(const error_code &ec) {
-  if (ec) {
+void session::handle_write(const error_code &ec)
+{
+  if (ec)
+  {
     throw system_error{ec};
   }
 

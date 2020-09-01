@@ -1,0 +1,30 @@
+Expression calculator
+
+Need to write a multithread server application on C++ to calculate math expressions 
+Application will get input value “(3+ 2*4) * 7” on TCP socket. 
+
+0) The end of expression symbol is new line character ‘\n’. 
+
+The result of the calculation result should be written back to the socket.
+After getting and calculation should continue serving other expressions from that socket (socket
+shouldn’t be closed). Server should be able to serve many clients (>10000) at the same time.
+Clients’ requests should be served concurrently (no more than free cpu cores at the same time).
+For implementing network input/output could be used any ubuntu library. For testing could be
+used any client (netcat,telnet).
+
+1) Input expression could be upto 1GB. Processing 1 Gb of expression shouldn’t take more than
+several minutes. 
+
+2) Expression should consist only from round number(not float). 
+
+3) Should be supported operations -(subtraction), +(plus), (multiplication),(divide) and brackets according
+priorities. 
+
+4) For ensure that it works well it would be a plus to write generator of input test sequences
+and unit tests for developed components.
+
+5) It would be a plus to see nice and clean code, with read me, description of how to install,
+run test and run application.
+
+6) Will be a plus to see it on git repo (for instance, on bitbucket). Notice that repo should be
+private with invitation to recruitment@coccoc.com to non-disclose solution.

@@ -3,7 +3,7 @@ Expression calculator
 Need to write a multithread server application on C++ to calculate math expressions 
 Application will get input value “(3+ 2*4) * 7” on TCP socket. 
 
-0) The end of expression symbol is new line character ‘\n’. 
+0) The end of expression symbol is new line character ‘\n’. (OK)
 
 The result of the calculation result should be written back to the socket.
 After getting and calculation should continue serving other expressions from that socket (socket

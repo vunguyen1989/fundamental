@@ -1,10 +1,12 @@
 #pragma once
-
 #include <array>
-#include <memory>
-
 #include <boost/asio.hpp>
+#include <memory>
+#include <stdexcept>
+
 #include "checker.h"
+#include "processor.h"
+
 /**
  * A TCP session opened on the server.
  */
@@ -38,12 +40,11 @@ public:
    */
   socket_t &socket() { return socket_; }
 
-  /**
-   * Get a reference to the session socket.
-   */
   VuNguyen::Checker Checker() { return checker_; }
 
 private:
+  uint32_t ExpressionLen(int rev_len) { return rev_len - 1; }
+
   /**
    * Session socket
    */
@@ -54,8 +55,13 @@ private:
    */
   std::array<uint8_t, 4096> buffer_;
 
-  /**
-   * Checker to be used for checking the format of input
-   */
   VuNguyen::Checker checker_;
+
+  std::optional<std::string> Evaluate(const char *const e)
+  {
+    VuNguyen::Evaluator ev;
+    const VuNguyen::expression *const ex = ev.parse(e);
+    assert("Sanity check" && ex);
+    return std::to_string((*ex)());
+  }
 };

@@ -3,7 +3,6 @@
 #include <vector>
 
 #include <boost/asio.hpp>
-#include <string_view>
 
 namespace VuNguyen
 {
@@ -14,9 +13,11 @@ namespace VuNguyen
     class Checker
     {
     public:
-        bool IsValid(const std::string_view &str);
+        bool IsValid(uint8_t *p, uint16_t size_);
 
     private:
+        bool IsDigit(uint8_t p);
+        bool IsOperator(uint8_t p);
     };
 
 } // namespace VuNguyen

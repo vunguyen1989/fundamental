@@ -4,15 +4,19 @@
 namespace VuNguyen
 {
 
-    bool Checker::IsValid(const std::string_view &s)
+    bool Checker::IsValid(uint8_t *p, uint16_t size_)
     {
-        if (s.back() != '\n')
+        if (*(p + size_ - 1) != '\n')
         {
-            std::cout << "The message is not end by a \n"
-                      << std::endl;
+
+            std::cout << "The message is not end by a new line character\n";
             return false;
         }
-
+        if (size_ == 1)
+        {
+            std::cout << "The message is a new line characteronly\n";
+            return false;
+        }
         return true;
     }
 

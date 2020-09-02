@@ -4,18 +4,22 @@
 namespace VuNguyen
 {
 
-    bool Checker::IsValid(uint8_t *p, uint16_t size_)
+    bool Checker::IsValid(uint8_t *p, uint16_t size_, char *str)
     {
         if (*(p + size_ - 1) != '\n')
         {
-
             std::cout << "The message is not end by a new line character\n";
             return false;
         }
-        if (size_ == 1)
+        for (auto i = 0, j = 0; i < size_; i++)
         {
-            std::cout << "The message is a new line characteronly\n";
-            return false;
+            if (p[i] == ' ')
+                continue;
+            else
+            {
+                str[j] = p[i];
+                j++;
+            }
         }
         return true;
     }

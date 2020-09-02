@@ -1,6 +1,7 @@
 #include <cassert>
 #include <iostream>
 #include <list>
+#include <memory>
 #include <stdexcept>
 
 // https://stackoverflow.com/questions/17806760/binary-expression-tree-c
@@ -32,20 +33,27 @@ struct number_token : public expression
 
 struct binary_predicate : public expression
 {
-    expression *left_;
-    expression *right_;
 
-    binary_predicate(expression *const left = 0, expression *const right = 0)
-        : left_(left), right_(right)
+    std::unique_ptr<expression> left_;
+    std::unique_ptr<expression> right_;
+
+    binary_predicate(std::unique_ptr<expression> left = 0, std::unique_ptr<expression> right = 0)
+
     {
+        left_ = std::move(left);
+        right_ = std::move(right);
     }
+    virtual ~binary_predicate(){
+
+    };
 };
 
 struct plus_type : public binary_predicate
 {
-    plus_type(expression *const left, expression *const right)
-        : binary_predicate(left, right)
+    plus_type(std::unique_ptr<expression> left, std::unique_ptr<expression> right)
     {
+        left_ = std::move(left);
+        right_ = std::move(right);
     }
 
     int operator()() const
@@ -56,9 +64,10 @@ struct plus_type : public binary_predicate
 
 struct minus_type : public binary_predicate
 {
-    minus_type(expression *const left, expression *const right)
-        : binary_predicate(left, right)
+    minus_type(std::unique_ptr<expression> left, std::unique_ptr<expression> right)
     {
+        left_ = std::move(left);
+        right_ = std::move(right);
     }
 
     int operator()() const
@@ -69,9 +78,10 @@ struct minus_type : public binary_predicate
 
 struct mul_type : public binary_predicate
 {
-    mul_type(expression *const left, expression *const right)
-        : binary_predicate(left, right)
+    mul_type(std::unique_ptr<expression> left, std::unique_ptr<expression> right)
     {
+        left_ = std::move(left);
+        right_ = std::move(right);
     }
 
     int operator()() const
@@ -82,9 +92,10 @@ struct mul_type : public binary_predicate
 
 struct div_type : public binary_predicate
 {
-    div_type(expression *const left, expression *const right)
-        : binary_predicate(left, right)
+    div_type(std::unique_ptr<expression> left, std::unique_ptr<expression> right)
     {
+        left_ = std::move(left);
+        right_ = std::move(right);
     }
 
     int operator()() const
@@ -96,29 +107,29 @@ struct div_type : public binary_predicate
 class evaluator
 {
 public:
-    const expression *parse(const char *); ///< Parse an expression
+    std::unique_ptr<expression> parse(const char *); ///< Parse an expression
 
 private:
-    expression *parse_number(const char *&);   ///< Parse numeric constants
-    expression *parse_atom(const char *&);     ///< Parse nested expression
-    expression *parse_summands(const char *&); ///< Parse '+' and '-' operations
-    expression *parse_factors(const char *&);  ///< Parse '*' and '/' operations
+    std::unique_ptr<expression> parse_number(const char *&);   ///< Parse numeric constants
+    std::unique_ptr<expression> parse_atom(const char *&);     ///< Parse nested expression
+    std::unique_ptr<expression> parse_summands(const char *&); ///< Parse '+' and '-' operations
+    std::unique_ptr<expression> parse_factors(const char *&);  ///< Parse '*' and '/' operations
 };
 
-expression *evaluator::parse_number(const char *&s)
+std::unique_ptr<expression> evaluator::parse_number(const char *&s)
 {
     assert("Sanity check" && s && std::isdigit(*s));
-    number_token *nt = new number_token(0);
+    std::unique_ptr<number_token> nt(new number_token(0));
     // Convert number...
 
     while (*s && std::isdigit(*s))
     {
         nt->value_ = nt->value_ * 10 + *s++ - '0';
     }
-    return nt;
+    return std::move(nt);
 }
 
-expression *evaluator::parse_atom(const char *&s)
+std::unique_ptr<expression> evaluator::parse_atom(const char *&s)
 {
     assert("Sanity check" && s);
     if (*s == 0)
@@ -128,7 +139,7 @@ expression *evaluator::parse_atom(const char *&s)
     else if (*s == '(')
     {
         s++;
-        expression *atom = parse_summands(s);
+        std::unique_ptr<expression> atom = parse_summands(s);
         if (*s == ')')
         {
             s++;
@@ -138,30 +149,33 @@ expression *evaluator::parse_atom(const char *&s)
     }
     else if (std::isdigit(*s))
     {
-        expression *atom = parse_number(s);
+        std::unique_ptr<expression> atom = parse_number(s);
         return atom;
     }
     throw std::runtime_error("Atom parse error: unexpected char");
 }
 
-expression *evaluator::parse_factors(const char *&s)
+std::unique_ptr<expression> evaluator::parse_factors(const char *&s)
 {
     assert("Sanity check" && s);
-    expression *left = parse_atom(s);
+    std::unique_ptr<expression> left = parse_atom(s);
     while (*s)
     {
         if (*s == '*')
         {
             s++;
-            expression *right = parse_atom(s);
-            left = new mul_type(left, right);
+            std::unique_ptr<expression> right = parse_atom(s);
+            auto mul = std::unique_ptr<mul_type>(new mul_type(std::move(left), std::move(right)));
+            left = std::move(mul);
+
             continue;
         }
         else if (*s == '/')
         {
             s++;
-            expression *right = parse_atom(s);
-            left = new div_type(left, right);
+            std::unique_ptr<expression> right = parse_atom(s);
+            auto div = std::unique_ptr<div_type>(new div_type(std::move(left), std::move(right)));
+            left = std::move(div);
             continue;
         }
         return left;
@@ -169,24 +183,27 @@ expression *evaluator::parse_factors(const char *&s)
     return left;
 }
 
-expression *evaluator::parse_summands(const char *&s)
+std::unique_ptr<expression> evaluator::parse_summands(const char *&s)
 {
     assert("Sanity check" && s);
-    expression *left = parse_factors(s);
+    std::unique_ptr<expression> left = parse_factors(s);
     while (*s)
     {
         if (*s == '+')
         {
             s++;
-            expression *right = parse_factors(s);
-            left = new plus_type(left, right);
+            std::unique_ptr<expression> right = parse_factors(s);
+            auto sum = std::unique_ptr<plus_type>(new plus_type(std::move(left), std::move(right)));
+            left = std::move(sum);
+
             continue;
         }
         else if (*s == '-')
         {
             s++;
-            expression *right = parse_factors(s);
-            left = new minus_type(left, right);
+            std::unique_ptr<expression> right = parse_factors(s);
+            auto minus = std::unique_ptr<minus_type>(new minus_type(std::move(left), std::move(right)));
+            left = std::move(minus);
             continue;
         }
         return left;
@@ -194,7 +211,7 @@ expression *evaluator::parse_summands(const char *&s)
     return left;
 }
 
-const expression *evaluator::parse(const char *s)
+std::unique_ptr<expression> evaluator::parse(const char *s)
 {
     return parse_summands(s);
 }
@@ -202,7 +219,7 @@ const expression *evaluator::parse(const char *s)
 int evaluate(const char *const e)
 {
     evaluator ev;
-    const expression *const ex = ev.parse(e);
+    std::unique_ptr<expression> ex = ev.parse(e);
     assert("Sanity check" && ex);
     return (*ex)();
 }

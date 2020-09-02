@@ -13,11 +13,7 @@ namespace VuNguyen
     class Checker
     {
     public:
-        bool IsValid(uint8_t *p, uint16_t size_);
-
-    private:
-        bool IsDigit(uint8_t p);
-        bool IsOperator(uint8_t p);
+        bool IsValid(uint8_t *p, uint16_t size_, char *str);
     };
 
 } // namespace VuNguyen

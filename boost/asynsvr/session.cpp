@@ -32,27 +32,14 @@ void session::handle_read(const error_code &ec, size_t bytes_transferred)
     throw system_error{ec};
   }
 
-  std::cout << "Thread " << std::this_thread::get_id() << ": Received "
-            << bytes_transferred << " bytes on " << socket_.local_endpoint()
-            << " from " << socket_.remote_endpoint() << std::endl;
-
-  auto isValid = Checker().IsValid(buffer_.data(), bytes_transferred);
+  char refined_buf[bytes_transferred] = {0};
+  auto isValid = Checker().IsValid(buffer_.data(), bytes_transferred, refined_buf);
   if (isValid)
   {
-    std::string str;
-    for (auto i : buffer_)
-    {
-      if (i == ' ')
-        continue;
-      else
-        str.push_back(i);
-    }
-    auto expression_result = Evaluate(str.c_str());
+    auto expression_result = Evaluate(refined_buf);
     if (expression_result.has_value())
     {
-      if (expression_result.value() == "")
-        return;
-      std::cout << "Expression : " << buffer_.data() << "Result = " << expression_result.value() << std::endl;
+      // std::cout << "Expression : " << buffer_.data() << "Result = " << expression_result.value() << std::endl;
       auto handler = std::bind(&session::handle_write, shared_from_this(), _1);
       boost::asio::async_write(socket_, boost::asio::buffer(expression_result.value().c_str(), expression_result.value().size()), handler);
     }

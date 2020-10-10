@@ -1,41 +1,35 @@
-#include <iostream> 
+/*
+    [x] implicit call of constructor
+    [x] normal call of constructor
+    [x] the purpose of explicit keyword
+*/
 
-using namespace std; 
+#include <iostream>
+using namespace std;
 
-class Complex 
-{ 
-    private: 
-        double real; 
-        double imag; 
+class Base
+{
+    int val;
 
-    public: 
-        // Default constructor 
-        Complex(double r = 0.0, double i = 0.0) : real(r), imag(i) {} 
-        // explicit Complex(double r = 0.0, double i = 0.0) : real(r), imag(i) {} 
+public:
+    explicit Base(int x)
+    {
+        val = x;
+        std::cout << "Constructor with val = " << val << std::endl;
+    }
+    int Value() { return val; }
+};
 
-        // A method to compare two Complex numbers 
-        bool operator == (Complex rhs) { 
-            return (real == rhs.real && imag == rhs.imag)? true : false; 
-        } 
-}; 
+void foo(Base b)
+{
+    std::cout << "foo with Base.val = " << b.Value() << std::endl;
+}
 
-int main() 
-{ 
-	// a Complex object 
-	Complex com1(3.0, 0.0); 
+int main()
+{
+    Base b(5);
+    Base b1 = 10;
 
-    /*
-        if a class has a constructor which can be CALLED WITH A SINGLE ARGUMENT, 
-        then this constructor becomes CONVERSION CONSTRUCTOR because such a constructor allows conversion 
-        of the single argument to the class being constructed.
-    */
-	
-
-
-	// if (com1 == 3.0) //avoid such IMPLICIT CONVERSIONS as these may lead to unexpected results => Explicit keyword in constructor
-    if (com1 == (int)3) //with EXPLICIT in constructor => (Complex) to EXPLICITLY typecast
-    	cout << "Same"; 
-	else
-	    cout << "Not Same"; 
-	return 0; 
-} 
+    foo(b);
+    foo(20);
+}

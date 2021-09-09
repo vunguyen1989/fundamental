@@ -1,0 +1,23 @@
+git
+	list of conflict files
+		git diff --name-only --diff-filter=U
+
+
+docker
+        docker run -it -d <image_id>
+                bỏ -d thì anh sẽ xem được log của nó
+
+        mount một folder vào docker
+                docker run -it --mount type=bind,source=<host folder>,target=<docker folder> <image_id>
+                        ví dụ:
+                                docker run -it --mount type=bind,source=/home/vunn5/data,target=/code/data <image_id>
+
+        xem trong một docker đang chạy có gì
+                sudo docker exec -it auto_tool_2 /bin/bash
+                        nến không thì
+                                sudo docker exec -it container_id /bin/sh
+        docker rmi <your-image-id> <your-image-id> ...
+
+unittest
+	python        
+		python3 -m unittest -v <folder chứa test>

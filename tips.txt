@@ -1,8 +1,18 @@
 git
 	list of conflict files
 		git diff --name-only --diff-filter=U
-
-
+	checkout to a specific commit
+		git checkout c5f567 -- file1/to/restore file2/to/restore
+	check remote link	
+		git config --get remote.origin.url
+	reset branch to a commit
+		git reset --hard 56e05fced
+	amend a comment
+		git commit --amend -m "New commit message."
+	fetch all branch
+		git fetch --all
+	change branch name in local
+		git branch -m <oldname> <newname>
 docker
         docker run -it -d <image_id>
                 bỏ -d thì anh sẽ xem được log của nó
@@ -18,6 +28,57 @@ docker
                                 sudo docker exec -it container_id /bin/sh
         docker rmi <your-image-id> <your-image-id> ...
 
+	force docker-compse to build 
+		docker-compose up --force-recreate --build
+
+	delete on none image (dangling image:
+		docker rmi $(docker images -f dangling=true -q)
+
 unittest
 	python        
 		python3 -m unittest -v <folder chứa test>
+	for running unittest in VS code, debugging purpose
+		export PYTHONPATH="/home/vunn/repo/PublicRoadTestPlatform/automation-shift-left"
+
+rabbitMq
+	install rabbitMq on local, expose 5672 5673 and access via browser at 15672
+		docker run -d --name some-rabbit -p 5672:5672 -p 5673:5673 -p 15672:15672 rabbitmq:3-management
+
+openvpn
+	sudo openvpn --config /home/vunn/keys/client.ovpn --auth-user-pass
+
+kubectl
+	# Get all running pod in your Default namespace
+	kubectl get pods
+	
+	# Get all service in your default namespace
+	kubectl get svc
+	
+	# Port forward a service, deployment or anything you want to your localhost
+	kubectl port-forward service/mongodb 27017:27017 # Example for Mongo DB
+	kubectl port-forward service/mysql 3306:3306 # Example for MySQL DB
+	kubectl port-forward service/rabbitmq 15672:15672 # Example for Rabbitmq Web UI
+	
+	# Describe a pod, service, ... (any object in k8s)
+	kubectl describe pod <pod_name>
+	kubectl describe svc <service_name>
+	
+	# Get log of a pod
+	kubectl logs -f <pod_name>
+
+systemctl command to manage postgresql service:
+	
+	stop service:
+		systemctl stop postgresql
+	
+	start service:
+		systemctl start postgresql
+	
+	show status of service:
+		systemctl status postgresql
+	
+	disable service(not auto-start any more)
+		systemctl disable postgresql
+	
+	enable service postgresql(auto-start)
+		systemctl enable postgresql

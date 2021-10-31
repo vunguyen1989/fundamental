@@ -1,0 +1,5 @@
+open folder: 
+	ctrl k o
+oepn market serach: 
+	ctrl shift x
+

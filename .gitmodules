@@ -1,0 +1,3 @@
+[submodule "Elixir/Elixir/elixir-in-action"]
+	path = Elixir/Elixir/elixir-in-action
+	url = https://github.com/sasa1977/elixir-in-action
